@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DockerUpdate.Notifications/DockerUpdate.Notifications.csproj" Id="8119adfe-cad7-41f8-95da-c8c31e8c78f2" />
+    <Project Path="src/DockerUpdater.Shared/DockerUpdater.Shared.csproj" Id="263b5ed2-c329-4079-9b95-7156ead48be5" />
+    <Project Path="src/DockerUpdater.Worker/DockerUpdater.Worker.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/DockerUpdater.Worker.Tests/DockerUpdater.Worker.Tests.csproj" />
+  </Folder>
+</Solution>

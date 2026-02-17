@@ -1,0 +1,14 @@
+services:
+  docker-updater:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: docker-updater
+    environment:
+      DOCKER_UPDATER_POLL_INTERVAL: "300"
+      DOCKER_UPDATER_LABEL_ENABLE: "true"
+      DOCKER_UPDATER_CLEANUP: "true"
+      DOCKER_UPDATER_NOTIFICATION_URL: ""
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
