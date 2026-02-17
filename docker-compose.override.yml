@@ -1,0 +1,6 @@
+services:
+  docker-updater:
+    image: docker-updater:dev
+    build:
+      context: .
+      dockerfile: Dockerfile

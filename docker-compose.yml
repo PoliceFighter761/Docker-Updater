@@ -1,8 +1,6 @@
 services:
   docker-updater:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${DOCKER_UPDATER_IMAGE:-ghcr.io/policefighter761/docker-updater}:${DOCKER_UPDATER_TAG:-latest}
     container_name: docker-updater
     environment:
       DOCKER_UPDATER_POLL_INTERVAL: "300"

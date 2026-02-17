@@ -14,7 +14,7 @@ namespace DockerUpdater.Notifications
                 return;
             }
 
-            DiscordPayload payload = new(NotificationComposer.Compose(sessionResult));
+            DiscordPayload payload = new(NotificationComposer.Compose(sessionResult, options.DiscordMessageTemplate));
 
             try
             {

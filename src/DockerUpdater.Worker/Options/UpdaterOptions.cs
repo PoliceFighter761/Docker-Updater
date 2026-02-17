@@ -19,6 +19,7 @@ namespace DockerUpdater.Worker.Options
         public HashSet<string> TargetContainers { get; init; } = new(StringComparer.OrdinalIgnoreCase);
         public string? NotificationUrl { get; init; }
         public string? DiscordWebhookUrl { get; init; }
+        public string? DiscordMessageTemplate { get; init; }
         public string TimeZone { get; init; } = "UTC";
 
         public static UpdaterOptions LoadFromEnvironment()
@@ -40,6 +41,7 @@ namespace DockerUpdater.Worker.Options
                 TargetContainers = ParseSet(Get(EnvNames.Containers)),
                 NotificationUrl = NullIfWhiteSpace(Get(EnvNames.NotificationUrl)),
                 DiscordWebhookUrl = NullIfWhiteSpace(Get(EnvNames.DiscordWebhookUrl)),
+                DiscordMessageTemplate = NullIfWhiteSpace(Get(EnvNames.DiscordMessageTemplate)),
                 TimeZone = NullIfWhiteSpace(Get(EnvNames.TimeZone)) ?? "UTC"
             };
         }

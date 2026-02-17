@@ -20,10 +20,11 @@ if (validationErrors.Count > 0)
 }
 
 builder.Services.AddSingleton(options);
-builder.Services.AddSingleton(new NotificationOptions(options.NotificationUrl, options.DiscordWebhookUrl));
+builder.Services.AddSingleton(new NotificationOptions(options.NotificationUrl, options.DiscordWebhookUrl, options.DiscordMessageTemplate));
 builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddSingleton<IDockerClientFactory, DockerClientFactory>();
+builder.Services.AddSingleton<RegistryAuthResolver>();
 builder.Services.AddSingleton<ContainerRecreator>();
 builder.Services.AddSingleton<ContainerSelectionPolicy>();
 builder.Services.AddSingleton<UpdateCoordinator>();

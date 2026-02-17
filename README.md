@@ -13,6 +13,8 @@ Docker Updater is a standalone .NET Worker app that runs in Docker and updates r
 
 ## Environment variables
 
+It is recommended to set these environment variables in a .ENV file or in a docker-compose.override.yml file.
+
 ### Docker connectivity
 
 - `DOCKER_HOST`
@@ -24,6 +26,11 @@ Docker Updater is a standalone .NET Worker app that runs in Docker and updates r
   - Purpose: Enables TLS verification for Docker daemon connections.
   - Values: `true|false` (`1|0`, `yes|no`, `on|off` also supported).
   - Default: `false`.
+
+- `DOCKER_CONFIG`
+  - Purpose: Directory containing Docker client auth config (`config.json`) used for private registry pulls.
+  - Default: container user's `~/.docker`.
+  - Recommended in Docker: mount host Docker config and set `DOCKER_CONFIG` to that mount path.
 
 ### Scheduling and execution
 
@@ -93,6 +100,20 @@ Docker Updater is a standalone .NET Worker app that runs in Docker and updates r
   - Type: HTTPS URL.
   - Priority: preferred over `DOCKER_UPDATER_NOTIFICATION_URL`.
 
+- `DOCKER_UPDATER_DISCORD_MESSAGE_TEMPLATE`
+  - Purpose: Custom Discord message format for session notifications.
+  - Type: text template with replacement variables.
+  - Default: built-in summary format.
+  - Newlines: use `\n` for line breaks when setting via environment variables.
+  - Conditional blocks:
+    - Syntax: `{{#if condition}}...{{/if}}`
+    - Supported conditions: `updated`, `failed`, `updated_and_failed`, `updated_only`, `failed_only`, `changes`, `no_changes`, `no_updates`, `no_failures`.
+  - Supported variables:
+    - `{{scanned}}`, `{{updated}}`, `{{failed}}`, `{{fresh}}`, `{{skipped}}`
+    - `{{started_at_utc}}`, `{{finished_at_utc}}`, `{{duration_seconds}}`
+    - `{{updated_list}}`, `{{failed_list}}`, `{{results}}`
+  - Example: `Run {{started_at_utc}} | scanned={{scanned}} updated={{updated}} failed={{failed}}\\n{{#if updated_only}}✅ Updated: {{updated_list}}\\n{{/if}}{{#if failed_only}}❌ Failed: {{failed_list}}\\n{{/if}}{{#if updated_and_failed}}⚠️ Updated: {{updated_list}} | Failed: {{failed_list}}\\n{{/if}}`
+
 - `DOCKER_UPDATER_NOTIFICATION_URL`
   - Purpose: Generic webhook URL fallback (currently HTTPS webhook expected).
   - Type: HTTPS URL.
@@ -103,6 +124,8 @@ Docker Updater is a standalone .NET Worker app that runs in Docker and updates r
 docker run -d \
   --name docker-updater \
   -v /var/run/docker.sock:/var/run/docker.sock \
+  -v $HOME/.docker:/host-docker-config:ro \
+  -e DOCKER_CONFIG=/host-docker-config \
   -e DOCKER_UPDATER_POLL_INTERVAL=300 \
   -e DOCKER_UPDATER_LABEL_ENABLE=true \
   -e DOCKER_UPDATER_CLEANUP=true \
@@ -113,6 +136,8 @@ docker run -d \
 
 ```powershell
 docker run -d --name docker-updater `
+  -v ${Env:USERPROFILE}\.docker:/host-docker-config:ro `
+  -e DOCKER_CONFIG=/host-docker-config `
   -e DOCKER_HOST=npipe://./pipe/docker_engine `
   -e DOCKER_UPDATER_POLL_INTERVAL=300 `
   -e DOCKER_UPDATER_LABEL_ENABLE=true `
@@ -123,7 +148,7 @@ docker run -d --name docker-updater `
 ## Run with Compose
 
 ```bash
-docker compose up -d --build
+docker compose up -d
 ```
 
 ## Build and test locally

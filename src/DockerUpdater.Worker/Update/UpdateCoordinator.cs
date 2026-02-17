@@ -9,6 +9,7 @@ namespace DockerUpdater.Worker.Update
 {
     public sealed class UpdateCoordinator(
         IDockerClientFactory dockerClientFactory,
+        RegistryAuthResolver registryAuthResolver,
         ContainerSelectionPolicy selectionPolicy,
         ContainerRecreator recreator,
         INotifier notifier,
@@ -89,16 +90,18 @@ namespace DockerUpdater.Worker.Update
                 container.State ?? string.Empty);
         }
 
-        private static async Task PullImageAsync(DockerClient client, string imageName, CancellationToken cancellationToken)
+        private async Task PullImageAsync(DockerClient client, string imageName, CancellationToken cancellationToken)
         {
             (string Repository, string Tag) image = ParseImage(imageName);
+            AuthConfig? authConfig = registryAuthResolver.ResolveForImage(imageName);
+
             await client.Images.CreateImageAsync(
                 new ImagesCreateParameters
                 {
                     FromImage = image.Repository,
                     Tag = image.Tag
                 },
-                authConfig: null,
+                authConfig,
                 new Progress<JSONMessage>(),
                 cancellationToken);
         }

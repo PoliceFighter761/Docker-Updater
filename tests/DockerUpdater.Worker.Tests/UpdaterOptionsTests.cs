@@ -24,6 +24,7 @@ namespace DockerUpdater.Worker.Tests
             Set(EnvNames.Containers, " /web  api,worker ");
             Set(EnvNames.NotificationUrl, " https://example.test/webhook ");
             Set(EnvNames.DiscordWebhookUrl, " https://discord.com/api/webhooks/x/y ");
+            Set(EnvNames.DiscordMessageTemplate, "Scanned={{scanned}} Updated={{updated}}");
             Set(EnvNames.TimeZone, "UTC");
 
             UpdaterOptions options = UpdaterOptions.LoadFromEnvironment();
@@ -43,6 +44,7 @@ namespace DockerUpdater.Worker.Tests
             Assert.True(options.TargetContainers.SetEquals(["web", "api", "worker"]));
             Assert.Equal("https://example.test/webhook", options.NotificationUrl);
             Assert.Equal("https://discord.com/api/webhooks/x/y", options.DiscordWebhookUrl);
+            Assert.Equal("Scanned={{scanned}} Updated={{updated}}", options.DiscordMessageTemplate);
             Assert.Equal("UTC", options.TimeZone);
         }
 

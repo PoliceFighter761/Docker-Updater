@@ -16,6 +16,7 @@ namespace DockerUpdater.Worker.Options
         public const string Containers = "DOCKER_UPDATER_CONTAINERS";
         public const string NotificationUrl = "DOCKER_UPDATER_NOTIFICATION_URL";
         public const string DiscordWebhookUrl = "DOCKER_UPDATER_DISCORD_WEBHOOK_URL";
+        public const string DiscordMessageTemplate = "DOCKER_UPDATER_DISCORD_MESSAGE_TEMPLATE";
         public const string TimeZone = "TZ";
     }
 
