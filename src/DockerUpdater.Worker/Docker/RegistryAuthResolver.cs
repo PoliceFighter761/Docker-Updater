@@ -7,11 +7,12 @@ namespace DockerUpdater.Worker.Docker
     public sealed class RegistryAuthResolver(ILogger<RegistryAuthResolver> logger)
     {
         private const string DockerHubAuthKey = "https://index.docker.io/v1/";
+        private readonly Lazy<string?> _cachedConfigJson = new(LoadDockerConfigJson);
 
         public AuthConfig? ResolveForImage(string imageName)
         {
             string registry = ExtractRegistry(imageName);
-            string? configJson = LoadDockerConfigJson();
+            string? configJson = _cachedConfigJson.Value;
             if (string.IsNullOrWhiteSpace(configJson))
             {
                 return null;
@@ -47,7 +48,7 @@ namespace DockerUpdater.Worker.Docker
             return null;
         }
 
-        private string? LoadDockerConfigJson()
+        private static string? LoadDockerConfigJson()
         {
             string? dockerConfigRoot = Environment.GetEnvironmentVariable("DOCKER_CONFIG");
             string configPath = string.IsNullOrWhiteSpace(dockerConfigRoot)
