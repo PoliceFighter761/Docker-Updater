@@ -60,17 +60,12 @@ namespace DockerUpdater.Worker.Options
 
         private static bool ParseBool(string? value, bool defaultValue)
         {
-            if (string.IsNullOrWhiteSpace(value))
+            if (bool.TryParse(value?.Trim(), out bool result))
             {
-                return defaultValue;
+                return result;
             }
 
-            return value.Trim().ToLowerInvariant() switch
-            {
-                "1" or "true" or "yes" or "on" => true,
-                "0" or "false" or "no" or "off" => false,
-                _ => defaultValue
-            };
+            return defaultValue;
         }
 
         private static int ParseInt(string? value, int defaultValue)

@@ -24,7 +24,7 @@ It is recommended to set these environment variables in a .ENV file or in a dock
 
 - `DOCKER_TLS_VERIFY`
   - Purpose: Enables TLS verification for Docker daemon connections.
-  - Values: `true|false` (`1|0`, `yes|no`, `on|off` also supported).
+  - Values: `true|false`.
   - Default: `false`.
 
 - `DOCKER_CONFIG`

@@ -14,11 +14,11 @@ namespace DockerUpdater.Worker.Tests
             Set(EnvNames.DockerTlsVerify, "true");
             Set(EnvNames.PollInterval, "120");
             Set(EnvNames.Schedule, "");
-            Set(EnvNames.LabelEnable, "1");
+            Set(EnvNames.LabelEnable, "true");
             Set(EnvNames.DisableContainers, "db, cache api");
-            Set(EnvNames.Cleanup, "yes");
+            Set(EnvNames.Cleanup, "true");
             Set(EnvNames.Timeout, "30s");
-            Set(EnvNames.RunOnce, "on");
+            Set(EnvNames.RunOnce, "true");
             Set(EnvNames.IncludeStopped, "true");
             Set(EnvNames.ReviveStopped, "true");
             Set(EnvNames.Containers, " /web  api,worker ");
