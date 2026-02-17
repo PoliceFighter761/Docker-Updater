@@ -1,4 +1,4 @@
-using Cronos;
+using Quartz;
 
 namespace DockerUpdater.Worker.Options
 {
@@ -17,11 +17,11 @@ namespace DockerUpdater.Worker.Options
             {
                 try
                 {
-                    _ = CronExpression.Parse(options.Schedule, CronFormat.IncludeSeconds);
+                    _ = new CronExpression(options.Schedule);
                 }
                 catch
                 {
-                    errors.Add($"{EnvNames.Schedule} is not a valid six-field cron expression.");
+                    errors.Add($"{EnvNames.Schedule} is not a valid Quartz cron expression.");
                 }
             }
 

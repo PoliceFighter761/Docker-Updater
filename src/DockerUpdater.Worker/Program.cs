@@ -3,7 +3,7 @@ using DockerUpdater.Worker.Docker;
 using DockerUpdater.Worker.Options;
 using DockerUpdater.Worker.Scheduling;
 using DockerUpdater.Worker.Update;
-using DockerUpdater.Worker;
+using Quartz;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
@@ -21,7 +21,6 @@ if (validationErrors.Count > 0)
 
 builder.Services.AddSingleton(options);
 builder.Services.AddSingleton(new NotificationOptions(options.NotificationUrl, options.DiscordWebhookUrl, options.DiscordMessageTemplate));
-builder.Services.AddSingleton(TimeProvider.System);
 
 builder.Services.AddSingleton<IDockerClientFactory, DockerClientFactory>();
 builder.Services.AddSingleton<RegistryAuthResolver>();
@@ -29,12 +28,42 @@ builder.Services.AddSingleton<ContainerRecreator>();
 builder.Services.AddSingleton<ContainerSelectionPolicy>();
 builder.Services.AddSingleton<UpdateCoordinator>();
 
-builder.Services.AddSingleton<IRunScheduler, RunScheduler>();
-
 builder.Services.AddHttpClient<DiscordNotifier>();
 builder.Services.AddSingleton<INotifier, DiscordNotifier>();
 
-builder.Services.AddHostedService<Worker>();
+builder.Services.AddQuartz(q =>
+{
+	JobKey jobKey = new("update-job");
+	q.AddJob<UpdateJob>(j => j.WithIdentity(jobKey));
+
+	if (!string.IsNullOrWhiteSpace(options.Schedule))
+	{
+		TimeZoneInfo timeZone = TimeZoneResolver.Resolve(options.TimeZone);
+		q.AddTrigger(t => t
+			.ForJob(jobKey)
+			.WithIdentity("update-cron-trigger")
+			.WithCronSchedule(options.Schedule, x => x
+				.InTimeZone(timeZone)
+				.WithMisfireHandlingInstructionFireAndProceed())
+			.StartNow());
+	}
+	else
+	{
+		q.AddTrigger(t => t
+			.ForJob(jobKey)
+			.WithIdentity("update-interval-trigger")
+			.WithSimpleSchedule(x => x
+				.WithIntervalInSeconds(options.PollIntervalSeconds)
+				.RepeatForever()
+				.WithMisfireHandlingInstructionNextWithRemainingCount())
+			.StartNow());
+	}
+});
+
+builder.Services.AddQuartzHostedService(q =>
+{
+	q.WaitForJobsToComplete = true;
+});
 
 IHost host = builder.Build();
 host.Run();
