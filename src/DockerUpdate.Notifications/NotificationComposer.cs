@@ -4,12 +4,12 @@ using DockerUpdater.Shared;
 
 namespace DockerUpdater.Notifications
 {
-    public static class NotificationComposer
+    public static partial class NotificationComposer
     {
-        private static readonly Regex TemplateVariableRegex = new("\\{\\{\\s*([a-zA-Z0-9_]+)\\s*\\}\\}", RegexOptions.Compiled);
-        private static readonly Regex ConditionalBlockRegex = new(
-            "\\{\\{#if\\s+([a-zA-Z0-9_]+)\\s*\\}\\}(.*?)\\{\\{/if\\}\\}",
-            RegexOptions.Compiled | RegexOptions.Singleline);
+        [GeneratedRegex("\\{\\{\\s*([a-zA-Z0-9_]+)\\s*\\}\\}", RegexOptions.Compiled)]
+        private static partial Regex TemplateVariableRegex();
+        [GeneratedRegex("\\{\\{#if\\s+([a-zA-Z0-9_]+)\\s*\\}\\}(.*?)\\{\\{/if\\}\\}", RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex ConditionalBlockRegex();
 
         public static string Compose(UpdateSessionResult session, string? template = null)
         {
@@ -71,14 +71,14 @@ namespace DockerUpdater.Notifications
             string normalizedTemplate = template.Replace("\\n", "\n", StringComparison.Ordinal)
                 .Replace("\\t", "\t", StringComparison.Ordinal);
 
-            string withConditionals = ConditionalBlockRegex.Replace(normalizedTemplate, match =>
+            string withConditionals = ConditionalBlockRegex().Replace(normalizedTemplate, match =>
             {
                 string condition = match.Groups[1].Value;
                 string content = match.Groups[2].Value;
                 return EvaluateCondition(condition, session, updatedItems.Count, failedItems.Count) ? content : string.Empty;
             });
 
-            return TemplateVariableRegex.Replace(withConditionals, match =>
+            return TemplateVariableRegex().Replace(withConditionals, match =>
             {
                 string key = match.Groups[1].Value;
                 return variables.TryGetValue(key, out string? value) ? value : match.Value;
