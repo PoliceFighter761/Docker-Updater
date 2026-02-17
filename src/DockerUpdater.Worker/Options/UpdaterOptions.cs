@@ -6,6 +6,7 @@ namespace DockerUpdater.Worker.Options
     {
         public Uri? DockerHost { get; init; }
         public bool DockerTlsVerify { get; init; }
+        public string? DockerCertPath { get; init; }
         public int PollIntervalSeconds { get; init; } = 86400;
         public bool PollIntervalExplicitlySet { get; init; }
         public string? Schedule { get; init; }
@@ -29,6 +30,7 @@ namespace DockerUpdater.Worker.Options
                 PollIntervalExplicitlySet = !string.IsNullOrWhiteSpace(Get(EnvNames.PollInterval)),
                 DockerHost = ParseUri(Get(EnvNames.DockerHost)),
                 DockerTlsVerify = ParseBool(Get(EnvNames.DockerTlsVerify), defaultValue: false),
+                DockerCertPath = NullIfWhiteSpace(Get(EnvNames.DockerCertPath)),
                 PollIntervalSeconds = ParseInt(Get(EnvNames.PollInterval), 86400),
                 Schedule = NullIfWhiteSpace(Get(EnvNames.Schedule)),
                 LabelEnable = ParseBool(Get(EnvNames.LabelEnable), defaultValue: false),

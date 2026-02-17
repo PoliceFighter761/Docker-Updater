@@ -27,6 +27,11 @@ It is recommended to set these environment variables in a .ENV file or in a dock
   - Values: `true|false` (`1|0`, `yes|no`, `on|off` also supported).
   - Default: `false`.
 
+- `DOCKER_CERT_PATH`
+  - Purpose: Directory containing TLS certificates (ca.pem, cert.pem, key.pem) used when `DOCKER_TLS_VERIFY` is enabled.
+  - Default: `~/.docker` or system default certificate locations.
+  - Required when: `DOCKER_TLS_VERIFY` is `true` and using TLS-secured Docker daemon.
+
 - `DOCKER_CONFIG`
   - Purpose: Directory containing Docker client auth config (`config.json`) used for private registry pulls.
   - Default: container user's `~/.docker`.

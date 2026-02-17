@@ -12,6 +12,7 @@ namespace DockerUpdater.Worker.Tests
         {
             Set(EnvNames.DockerHost, "unix:///var/run/docker.sock");
             Set(EnvNames.DockerTlsVerify, "true");
+            Set(EnvNames.DockerCertPath, "/etc/docker/certs.d");
             Set(EnvNames.PollInterval, "120");
             Set(EnvNames.Schedule, "");
             Set(EnvNames.LabelEnable, "1");
@@ -32,6 +33,7 @@ namespace DockerUpdater.Worker.Tests
             Assert.NotNull(options.DockerHost);
             Assert.Equal("unix:///var/run/docker.sock", options.DockerHost!.ToString());
             Assert.True(options.DockerTlsVerify);
+            Assert.Equal("/etc/docker/certs.d", options.DockerCertPath);
             Assert.True(options.PollIntervalExplicitlySet);
             Assert.Equal(120, options.PollIntervalSeconds);
             Assert.True(options.LabelEnable);
