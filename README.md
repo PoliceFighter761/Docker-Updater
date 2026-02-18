@@ -9,6 +9,7 @@ Docker Updater is a standalone .NET Worker app that runs in Docker and updates r
 - Interval or cron-based scheduling.
 - Optional old-image cleanup after successful updates.
 - Discord webhook notifications.
+- SMTP email notifications.
 - Linux and Windows Docker host support.
 
 ## Environment variables
@@ -129,6 +130,51 @@ It is recommended to set these environment variables in a .ENV file or in a dock
 - `DOCKER_UPDATER_NOTIFICATION_URL`
   - Purpose: Generic webhook URL fallback (currently HTTPS webhook expected).
   - Type: HTTPS URL.
+
+- `DOCKER_UPDATER_SMTP_HOST`
+  - Purpose: SMTP server hostname for email notifications.
+  - Type: hostname or IP address.
+  - Example: `smtp.gmail.com`, `mailserver.local`.
+
+- `DOCKER_UPDATER_SMTP_PORT`
+  - Purpose: SMTP server port.
+  - Type: positive integer.
+  - Default: `587`.
+
+- `DOCKER_UPDATER_SMTP_USE_TLS`
+  - Purpose: Enables TLS/STARTTLS for the SMTP connection.
+  - Values: `true|false`.
+  - Default: `true`.
+
+- `DOCKER_UPDATER_SMTP_USERNAME`
+  - Purpose: Username for SMTP authentication.
+  - Type: string.
+  - Note: When omitted, no credentials are sent.
+
+- `DOCKER_UPDATER_SMTP_PASSWORD`
+  - Purpose: Password for SMTP authentication.
+  - Type: string.
+
+- `DOCKER_UPDATER_SMTP_FROM`
+  - Purpose: Sender email address.
+  - Type: email address.
+  - Default: `docker-updater@localhost`.
+
+- `DOCKER_UPDATER_SMTP_TO`
+  - Purpose: Recipient email address(es).
+  - Type: email address.
+  - Required when: `DOCKER_UPDATER_SMTP_HOST` is set.
+
+- `DOCKER_UPDATER_SMTP_SUBJECT`
+  - Purpose: Custom email subject line.
+  - Type: text template.
+  - Default: `Docker Updater: X updated, Y failed`.
+  - Supported variables: `{{scanned}}`, `{{updated}}`, `{{failed}}`.
+
+- `DOCKER_UPDATER_SMTP_MESSAGE_TEMPLATE`
+  - Purpose: Custom email body format for session notifications.
+  - Type: text template with replacement variables (same as Discord templates).
+  - Default: built-in summary format.
 
 ## Run with docker run (Linux)
 

@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DockerUpdater.Notifications
 {
-    public sealed class DiscordNotifier(HttpClient httpClient, NotificationOptions options, ILogger<DiscordNotifier> logger) : INotifier
+    public sealed class DiscordNotifier(IHttpClientFactory httpClientFactory, NotificationOptions options, ILogger<DiscordNotifier> logger) : INotifier
     {
         public async Task NotifySessionAsync(UpdateSessionResult sessionResult, CancellationToken cancellationToken)
         {
@@ -18,6 +18,7 @@ namespace DockerUpdater.Notifications
 
             try
             {
+                using HttpClient httpClient = httpClientFactory.CreateClient(nameof(DiscordNotifier));
                 using HttpResponseMessage response = await httpClient.PostAsJsonAsync(webhookUrl, payload, cancellationToken);
                 if (!response.IsSuccessStatusCode)
                 {

@@ -19,6 +19,15 @@ namespace DockerUpdater.Worker.Options
         public const string NotificationUrl = "DOCKER_UPDATER_NOTIFICATION_URL";
         public const string DiscordWebhookUrl = "DOCKER_UPDATER_DISCORD_WEBHOOK_URL";
         public const string DiscordMessageTemplate = "DOCKER_UPDATER_DISCORD_MESSAGE_TEMPLATE";
+        public const string SmtpHost = "DOCKER_UPDATER_SMTP_HOST";
+        public const string SmtpPort = "DOCKER_UPDATER_SMTP_PORT";
+        public const string SmtpUseTls = "DOCKER_UPDATER_SMTP_USE_TLS";
+        public const string SmtpUsername = "DOCKER_UPDATER_SMTP_USERNAME";
+        public const string SmtpPassword = "DOCKER_UPDATER_SMTP_PASSWORD";
+        public const string SmtpFrom = "DOCKER_UPDATER_SMTP_FROM";
+        public const string SmtpTo = "DOCKER_UPDATER_SMTP_TO";
+        public const string SmtpSubject = "DOCKER_UPDATER_SMTP_SUBJECT";
+        public const string SmtpMessageTemplate = "DOCKER_UPDATER_SMTP_MESSAGE_TEMPLATE";
         public const string TimeZone = "TZ";
     }
 

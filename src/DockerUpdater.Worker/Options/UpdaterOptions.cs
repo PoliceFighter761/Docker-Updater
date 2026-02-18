@@ -22,6 +22,15 @@ namespace DockerUpdater.Worker.Options
         public string? NotificationUrl { get; init; }
         public string? DiscordWebhookUrl { get; init; }
         public string? DiscordMessageTemplate { get; init; }
+        public string? SmtpHost { get; init; }
+        public int SmtpPort { get; init; } = 587;
+        public bool SmtpUseTls { get; init; } = true;
+        public string? SmtpUsername { get; init; }
+        public string? SmtpPassword { get; init; }
+        public string? SmtpFrom { get; init; }
+        public string? SmtpTo { get; init; }
+        public string? SmtpSubject { get; init; }
+        public string? SmtpMessageTemplate { get; init; }
         public string TimeZone { get; init; } = "UTC";
 
         public static UpdaterOptions LoadFromEnvironment()
@@ -46,6 +55,15 @@ namespace DockerUpdater.Worker.Options
                 NotificationUrl = NullIfWhiteSpace(Get(EnvNames.NotificationUrl)),
                 DiscordWebhookUrl = NullIfWhiteSpace(Get(EnvNames.DiscordWebhookUrl)),
                 DiscordMessageTemplate = NullIfWhiteSpace(Get(EnvNames.DiscordMessageTemplate)),
+                SmtpHost = NullIfWhiteSpace(Get(EnvNames.SmtpHost)),
+                SmtpPort = ParseInt(Get(EnvNames.SmtpPort), 587),
+                SmtpUseTls = ParseBool(Get(EnvNames.SmtpUseTls), defaultValue: true),
+                SmtpUsername = NullIfWhiteSpace(Get(EnvNames.SmtpUsername)),
+                SmtpPassword = NullIfWhiteSpace(Get(EnvNames.SmtpPassword)),
+                SmtpFrom = NullIfWhiteSpace(Get(EnvNames.SmtpFrom)),
+                SmtpTo = NullIfWhiteSpace(Get(EnvNames.SmtpTo)),
+                SmtpSubject = NullIfWhiteSpace(Get(EnvNames.SmtpSubject)),
+                SmtpMessageTemplate = NullIfWhiteSpace(Get(EnvNames.SmtpMessageTemplate)),
                 TimeZone = NullIfWhiteSpace(Get(EnvNames.TimeZone)) ?? "UTC"
             };
         }

@@ -20,7 +20,19 @@ if (validationErrors.Count > 0)
 }
 
 builder.Services.AddSingleton(options);
-builder.Services.AddSingleton(new NotificationOptions(options.NotificationUrl, options.DiscordWebhookUrl, options.DiscordMessageTemplate));
+builder.Services.AddSingleton(new NotificationOptions(
+	options.NotificationUrl,
+	options.DiscordWebhookUrl,
+	options.DiscordMessageTemplate,
+	options.SmtpHost,
+	options.SmtpPort,
+	options.SmtpUseTls,
+	options.SmtpUsername,
+	options.SmtpPassword,
+	options.SmtpFrom,
+	options.SmtpTo,
+	options.SmtpSubject,
+	options.SmtpMessageTemplate));
 
 builder.Services.AddSingleton<IDockerClientFactory, DockerClientFactory>();
 builder.Services.AddSingleton<RegistryAuthResolver>();
@@ -30,7 +42,7 @@ builder.Services.AddSingleton<SelfUpdateLauncher>();
 builder.Services.AddSingleton<UpdateCoordinator>();
 
 builder.Services.AddHttpClient<DiscordNotifier>();
-builder.Services.AddSingleton<INotifier, DiscordNotifier>();
+builder.Services.AddSingleton<INotifier, CompositeNotifier>();
 
 builder.Services.AddQuartz(q =>
 {
