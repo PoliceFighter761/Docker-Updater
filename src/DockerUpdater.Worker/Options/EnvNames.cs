@@ -12,6 +12,7 @@ namespace DockerUpdater.Worker.Options
         public const string Cleanup = "DOCKER_UPDATER_CLEANUP";
         public const string Timeout = "DOCKER_UPDATER_TIMEOUT";
         public const string RunOnce = "DOCKER_UPDATER_RUN_ONCE";
+        public const string SelfUpdate = "DOCKER_UPDATER_SELF_UPDATE";
         public const string IncludeStopped = "DOCKER_UPDATER_INCLUDE_STOPPED";
         public const string ReviveStopped = "DOCKER_UPDATER_REVIVE_STOPPED";
         public const string Containers = "DOCKER_UPDATER_CONTAINERS";

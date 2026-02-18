@@ -99,6 +99,12 @@ It is recommended to set these environment variables in a .ENV file or in a dock
   - Formats: `30s`, `2m`, `1h`, or `hh:mm:ss`.
   - Default: `10s`.
 
+- `DOCKER_UPDATER_SELF_UPDATE`
+  - Purpose: Allows the updater to update its own container by launching a short-lived helper container.
+  - Values: `true|false`.
+  - Default: `false`.
+  - Note: When a newer image is detected for the updater's own container, a one-shot helper is spawned from the new image. The helper targets only the updater container (`DOCKER_UPDATER_RUN_ONCE=true`), recreates it with the new image, then auto-removes itself.
+
 ### Notifications
 
 - `DOCKER_UPDATER_DISCORD_WEBHOOK_URL`
