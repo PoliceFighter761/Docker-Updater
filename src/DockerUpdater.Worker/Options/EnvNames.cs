@@ -4,6 +4,7 @@ namespace DockerUpdater.Worker.Options
     {
         public const string DockerHost = "DOCKER_HOST";
         public const string DockerTlsVerify = "DOCKER_TLS_VERIFY";
+        public const string DockerCertPath = "DOCKER_CERT_PATH";
         public const string PollInterval = "DOCKER_UPDATER_POLL_INTERVAL";
         public const string Schedule = "DOCKER_UPDATER_SCHEDULE";
         public const string LabelEnable = "DOCKER_UPDATER_LABEL_ENABLE";
