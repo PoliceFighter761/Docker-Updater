@@ -9,7 +9,7 @@ namespace DockerUpdater.Worker.Tests
         {
             UpdaterOptions options = new()
             {
-                Schedule = "0 0 * * * *",
+                Schedule = "0 0 * * * ?",
                 PollIntervalSeconds = 60,
                 PollIntervalExplicitlySet = true
             };
@@ -24,7 +24,7 @@ namespace DockerUpdater.Worker.Tests
         {
             UpdaterOptions options = new()
             {
-                Schedule = "0 0 * * * *",
+                Schedule = "0 0 * * * ?",
                 PollIntervalSeconds = 86400,
                 PollIntervalExplicitlySet = false
             };
@@ -59,7 +59,7 @@ namespace DockerUpdater.Worker.Tests
 
             IReadOnlyList<string> errors = OptionsValidator.Validate(options);
 
-            Assert.Contains(errors, error => error.Contains("valid six-field cron", StringComparison.OrdinalIgnoreCase));
+            Assert.Contains(errors, error => error.Contains("valid Quartz cron", StringComparison.OrdinalIgnoreCase));
         }
 
         [Fact]

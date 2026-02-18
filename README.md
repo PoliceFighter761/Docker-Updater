@@ -41,7 +41,8 @@ It is recommended to set these environment variables in a .ENV file or in a dock
 
 - `DOCKER_UPDATER_SCHEDULE`
   - Purpose: Cron schedule for checks.
-  - Format: 6-field cron (includes seconds), e.g. `0 */5 * * * *`.
+  - Format: Quartz cron (7 fields, seconds through year), e.g. `0 */5 * * * ?`.
+  - Note: Day-of-month or day-of-week must use `?`. See [Quartz cron docs](https://www.quartz-scheduler.net/documentation/quartz-3.x/tutorial/crontriggers.html).
   - Constraint: mutually exclusive with explicitly setting `DOCKER_UPDATER_POLL_INTERVAL`.
 
 - `DOCKER_UPDATER_RUN_ONCE`
