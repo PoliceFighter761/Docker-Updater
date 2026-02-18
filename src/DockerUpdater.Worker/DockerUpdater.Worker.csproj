@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DockerUpdate.Notifications\DockerUpdate.Notifications.csproj" />
+    <ProjectReference Include="..\DockerUpdater.Notifications\DockerUpdater.Notifications.csproj" />
     <ProjectReference Include="..\DockerUpdater.Shared\DockerUpdater.Shared.csproj" />
   </ItemGroup>
 </Project>
