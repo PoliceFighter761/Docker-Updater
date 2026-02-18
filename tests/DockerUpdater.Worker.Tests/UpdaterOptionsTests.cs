@@ -20,6 +20,7 @@ namespace DockerUpdater.Worker.Tests
             Set(EnvNames.Cleanup, "true");
             Set(EnvNames.Timeout, "30s");
             Set(EnvNames.RunOnce, "true");
+            Set(EnvNames.SelfUpdate, "true");
             Set(EnvNames.IncludeStopped, "true");
             Set(EnvNames.ReviveStopped, "true");
             Set(EnvNames.Containers, " /web  api,worker ");
@@ -41,6 +42,7 @@ namespace DockerUpdater.Worker.Tests
             Assert.True(options.Cleanup);
             Assert.Equal(TimeSpan.FromSeconds(30), options.StopTimeout);
             Assert.True(options.RunOnce);
+            Assert.True(options.SelfUpdate);
             Assert.True(options.IncludeStopped);
             Assert.True(options.ReviveStopped);
             Assert.True(options.TargetContainers.SetEquals(["web", "api", "worker"]));

@@ -26,6 +26,7 @@ builder.Services.AddSingleton<IDockerClientFactory, DockerClientFactory>();
 builder.Services.AddSingleton<RegistryAuthResolver>();
 builder.Services.AddSingleton<ContainerRecreator>();
 builder.Services.AddSingleton<ContainerSelectionPolicy>();
+builder.Services.AddSingleton<SelfUpdateLauncher>();
 builder.Services.AddSingleton<UpdateCoordinator>();
 
 builder.Services.AddHttpClient<DiscordNotifier>();

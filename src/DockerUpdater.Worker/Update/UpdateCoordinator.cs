@@ -14,6 +14,7 @@ namespace DockerUpdater.Worker.Update
         RegistryAuthResolver registryAuthResolver,
         ContainerSelectionPolicy selectionPolicy,
         ContainerRecreator recreator,
+        SelfUpdateLauncher selfUpdateLauncher,
         INotifier notifier,
         UpdaterOptions options,
         ILogger<UpdateCoordinator> logger)
@@ -47,6 +48,13 @@ namespace DockerUpdater.Worker.Update
                     if (string.Equals(imageBefore.ID, imageAfter.ID, StringComparison.OrdinalIgnoreCase))
                     {
                         results.Add(new ContainerUpdateResult(containerRef.Name, containerRef.Image, ContainerUpdateState.Fresh));
+                        continue;
+                    }
+
+                    if (options.SelfUpdate && SelfUpdateLauncher.IsSelf(containerRef.Id))
+                    {
+                        await selfUpdateLauncher.LaunchHelperAsync(containerRef, containerRef.Image, cancellationToken);
+                        results.Add(new ContainerUpdateResult(containerRef.Name, containerRef.Image, ContainerUpdateState.Updated, "Self-update delegated to helper container"));
                         continue;
                     }
 

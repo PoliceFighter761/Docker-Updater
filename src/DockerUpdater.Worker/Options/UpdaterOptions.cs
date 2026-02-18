@@ -15,6 +15,7 @@ namespace DockerUpdater.Worker.Options
         public bool Cleanup { get; init; }
         public TimeSpan StopTimeout { get; init; } = TimeSpan.FromSeconds(10);
         public bool RunOnce { get; init; }
+        public bool SelfUpdate { get; init; }
         public bool IncludeStopped { get; init; }
         public bool ReviveStopped { get; init; }
         public HashSet<string> TargetContainers { get; init; } = new(StringComparer.OrdinalIgnoreCase);
@@ -38,6 +39,7 @@ namespace DockerUpdater.Worker.Options
                 Cleanup = ParseBool(Get(EnvNames.Cleanup), defaultValue: false),
                 StopTimeout = ParseDuration(Get(EnvNames.Timeout), TimeSpan.FromSeconds(10)),
                 RunOnce = ParseBool(Get(EnvNames.RunOnce), defaultValue: false),
+                SelfUpdate = ParseBool(Get(EnvNames.SelfUpdate), defaultValue: false),
                 IncludeStopped = ParseBool(Get(EnvNames.IncludeStopped), defaultValue: false),
                 ReviveStopped = ParseBool(Get(EnvNames.ReviveStopped), defaultValue: false),
                 TargetContainers = ParseSet(Get(EnvNames.Containers)),
