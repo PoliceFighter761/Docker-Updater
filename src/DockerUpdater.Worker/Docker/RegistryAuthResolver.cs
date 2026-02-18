@@ -127,20 +127,7 @@ namespace DockerUpdater.Worker.Docker
 
         public static string ExtractRegistry(string imageName)
         {
-            string imageWithoutTagOrDigest = imageName.Split('@', 2, StringSplitOptions.TrimEntries)[0];
-            int lastSlash = imageWithoutTagOrDigest.LastIndexOf('/');
-            int lastColon = imageWithoutTagOrDigest.LastIndexOf(':');
-            if (lastColon > lastSlash)
-            {
-                imageWithoutTagOrDigest = imageWithoutTagOrDigest[..lastColon];
-            }
-
-            string firstSegment = imageWithoutTagOrDigest.Split('/', 2, StringSplitOptions.TrimEntries)[0];
-            bool hasExplicitRegistry = firstSegment.Contains('.', StringComparison.Ordinal)
-                || firstSegment.Contains(':', StringComparison.Ordinal)
-                || string.Equals(firstSegment, "localhost", StringComparison.OrdinalIgnoreCase);
-
-            return hasExplicitRegistry ? firstSegment : "index.docker.io";
+            return ImageReference.Parse(imageName).Registry;
         }
 
         private static IEnumerable<string> RegistryLookupCandidates(string registry)

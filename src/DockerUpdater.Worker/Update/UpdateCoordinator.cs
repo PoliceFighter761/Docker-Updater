@@ -5,6 +5,8 @@ using DockerUpdater.Shared;
 using DockerUpdater.Worker.Docker;
 using DockerUpdater.Worker.Options;
 
+using static DockerUpdater.Worker.Docker.ImageReference;
+
 namespace DockerUpdater.Worker.Update
 {
     public sealed class UpdateCoordinator(
@@ -92,7 +94,7 @@ namespace DockerUpdater.Worker.Update
 
         private async Task PullImageAsync(DockerClient client, string imageName, CancellationToken cancellationToken)
         {
-            (string Repository, string Tag) image = ParseImage(imageName);
+            ImageReference image = Parse(imageName);
             AuthConfig? authConfig = registryAuthResolver.ResolveForImage(imageName);
 
             await client.Images.CreateImageAsync(
@@ -124,15 +126,5 @@ namespace DockerUpdater.Worker.Update
             }
         }
 
-        private static (string Repository, string Tag) ParseImage(string imageName)
-        {
-            string[] parts = imageName.Split(':', 2, StringSplitOptions.TrimEntries);
-            if (parts.Length == 2)
-            {
-                return (parts[0], parts[1]);
-            }
-
-            return (imageName, "latest");
-        }
     }
 }
