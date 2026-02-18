@@ -40,7 +40,7 @@ builder.Services.AddSingleton<ContainerRecreator>();
 builder.Services.AddSingleton<ContainerSelectionPolicy>();
 builder.Services.AddSingleton<UpdateCoordinator>();
 
-builder.Services.AddHttpClient(nameof(DiscordNotifier));
+builder.Services.AddHttpClient<DiscordNotifier>();
 builder.Services.AddSingleton<INotifier, CompositeNotifier>();
 
 builder.Services.AddQuartz(q =>
