@@ -14,9 +14,34 @@ env:
   REGISTRY: ghcr.io
 
 jobs:
+  test:
+    name: Test
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.x'
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Test
+        run: dotnet test --no-build --logger "trx;LogFileName=test-results.trx"
+
   build:
     name: Build (PR)
     if: github.event_name == 'pull_request'
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
