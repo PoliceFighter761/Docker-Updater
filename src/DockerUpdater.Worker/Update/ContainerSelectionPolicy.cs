@@ -18,19 +18,17 @@ namespace DockerUpdater.Worker.Update
                 return false;
             }
 
-            string? labelValue = container.Labels.TryGetValue(LabelNames.Enable, out string? raw)
-                ? raw
+            bool? labelEnabled = container.Labels.TryGetValue(LabelNames.Enable, out string? raw)
+                && bool.TryParse(raw?.Trim(), out bool parsed)
+                ? parsed
                 : null;
-
-            bool isEnabledLabelTrue = IsTrue(labelValue);
-            bool isEnabledLabelFalse = IsFalse(labelValue);
 
             if (options.LabelEnable)
             {
-                return isEnabledLabelTrue;
+                return labelEnabled == true;
             }
 
-            if (isEnabledLabelFalse)
+            if (labelEnabled == false)
             {
                 return false;
             }
@@ -45,14 +43,6 @@ namespace DockerUpdater.Worker.Update
             return true;
         }
 
-        private static bool IsTrue(string? value)
-        {
-            return value?.Trim().ToLowerInvariant() is "1" or "true" or "yes" or "on";
-        }
 
-        private static bool IsFalse(string? value)
-        {
-            return value?.Trim().ToLowerInvariant() is "0" or "false" or "no" or "off";
-        }
     }
 }
