@@ -29,6 +29,7 @@ namespace DockerUpdater.Worker.Options
         public const string SmtpSubject = "DOCKER_UPDATER_SMTP_SUBJECT";
         public const string SmtpMessageTemplate = "DOCKER_UPDATER_SMTP_MESSAGE_TEMPLATE";
         public const string TimeZone = "TZ";
+        public const string DataDir = "DOCKER_UPDATER_DATA_DIR";
     }
 
     public static class LabelNames

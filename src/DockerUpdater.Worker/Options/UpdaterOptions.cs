@@ -32,6 +32,7 @@ namespace DockerUpdater.Worker.Options
         public string? SmtpSubject { get; init; }
         public string? SmtpMessageTemplate { get; init; }
         public string TimeZone { get; init; } = "UTC";
+        public string DataDir { get; init; } = DefaultDataDir();
 
         public static UpdaterOptions LoadFromEnvironment()
         {
@@ -64,7 +65,8 @@ namespace DockerUpdater.Worker.Options
                 SmtpTo = NullIfWhiteSpace(Get(EnvNames.SmtpTo)),
                 SmtpSubject = NullIfWhiteSpace(Get(EnvNames.SmtpSubject)),
                 SmtpMessageTemplate = NullIfWhiteSpace(Get(EnvNames.SmtpMessageTemplate)),
-                TimeZone = NullIfWhiteSpace(Get(EnvNames.TimeZone)) ?? "UTC"
+                TimeZone = NullIfWhiteSpace(Get(EnvNames.TimeZone)) ?? "UTC",
+                DataDir = NullIfWhiteSpace(Get(EnvNames.DataDir)) ?? DefaultDataDir()
             };
         }
 
@@ -153,5 +155,10 @@ namespace DockerUpdater.Worker.Options
         }
 
         private static string? NullIfWhiteSpace(string? value) => string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
+        private static string DefaultDataDir() =>
+            OperatingSystem.IsWindows()
+                ? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "DockerUpdater")
+                : "/data";
     }
 }
