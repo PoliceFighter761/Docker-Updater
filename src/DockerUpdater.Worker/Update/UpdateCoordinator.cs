@@ -14,6 +14,7 @@ namespace DockerUpdater.Worker.Update
         RegistryAuthResolver registryAuthResolver,
         ContainerSelectionPolicy selectionPolicy,
         ContainerRecreator recreator,
+        RecoveryProcessor recoveryProcessor,
         SelfUpdateLauncher selfUpdateLauncher,
         INotifier notifier,
         UpdaterOptions options,
@@ -25,6 +26,8 @@ namespace DockerUpdater.Worker.Update
             List<ContainerUpdateResult> results = [];
 
             using DockerClient dockerClient = dockerClientFactory.CreateClient();
+
+            await recoveryProcessor.RecoverAsync(dockerClient, cancellationToken);
 
             IList<ContainerListResponse> containers = await dockerClient.Containers.ListContainersAsync(
                 new ContainersListParameters { All = options.IncludeStopped },

@@ -7,4 +7,5 @@ RUN dotnet publish src/DockerUpdater.Worker/DockerUpdater.Worker.csproj -c Relea
 FROM mcr.microsoft.com/dotnet/runtime:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/publish .
+VOLUME /data
 ENTRYPOINT ["dotnet", "DockerUpdater.Worker.dll"]

@@ -9,4 +9,8 @@ services:
       DOCKER_UPDATER_NOTIFICATION_URL: ""
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - updater-data:/data
     restart: unless-stopped
+
+volumes:
+  updater-data:

@@ -36,6 +36,11 @@ builder.Services.AddSingleton(new NotificationOptions(
 
 builder.Services.AddSingleton<IDockerClientFactory, DockerClientFactory>();
 builder.Services.AddSingleton<RegistryAuthResolver>();
+builder.Services.AddSingleton(sp =>
+	new RecoveryJournal(
+		options.DataDir,
+		sp.GetRequiredService<ILogger<RecoveryJournal>>()));
+builder.Services.AddSingleton<RecoveryProcessor>();
 builder.Services.AddSingleton<ContainerRecreator>();
 builder.Services.AddSingleton<ContainerSelectionPolicy>();
 builder.Services.AddSingleton<SelfUpdateLauncher>();
